@@ -1,0 +1,174 @@
+﻿What is command to add new user? How to give them password?;$ useradd [username] $passwd [username]
+Command to give user sudo privileges?; $ echo userName ALL=(ALL) ALL > /etc/sudoers.d/username $ chmod 440 /etc/sudoers.d/username # create file that is the same as the user in /etc/sudoers.d/,set proper permissions
+Add /sbin and /usr/sbin to $PATH;$ PATH=$PATH:/usr/sbin:/sbin
+Why Does linux use a single filesystem tree?;All files and directories are a child of the root directory. Single directory tree style removes need to know the physical location of the resources. Data can be moved to new devices,but the hierarchy location remains the same. Partition and device changes are simpler.
+What is the role of the Filesystem Hierarchy Standard?;The FHS makes it easy to predict locations of installed files and directories. FHS is run by the linux foundation. specifies which directories must be present.
+What must be available in root for boot;/boot must be in root directory. It contains the compressed linux kernel vmlinuz,initrd or initramfs
+How would you examine subdirectories and their contents?; $ sudo du # use options to minimize depth for clarity
+What is the command to find the main consumers of storage on disc? Explain it.;# sudo du -shxc * #The DU command, disk usage. S flag shows totals,  H flag is human readable, xflag don't look and other file systems, asterisk wildcard will evaluate all and give a total. --max-depth=1 Will prevent searching in subdirectories. 
+What are the two distinctions regarding organization of the hierarchy tree?;Shareable vs non-shareable : variable vs static. non shareable is specific to one host. variable is data that can change without the help of the sys admin
+what is in /bin?;binaries,or executable,programs available in Single User Mode,
+What is in /boot?;Files needed to boot the system. Kernel,initrd,bootloader programs,etc
+What is in /dev?;Device Nodes,used to interacted with hardware and software devices
+what is in /etc?;etsy contains sys wide config files
+what is in /home?;user home directories,includes personal settings and files.
+what is in /lib?;libraries required by binaries in /bin and /sbin
+What is in /lib64?;64 bit libraries needed by binaries.
+what is in /mount?;point for removable media
+what is in /mnt?;temporarily mounted filesystems
+what is in /opt?;optional application packages
+what is in /proc?;Processes,virtual psuedo-filesystem,gives info about system and processes running on it,used to alter system parameters
+what is in /sys?;system,virtual psuedo-filesystem,similar to a device tree. part of the Unified Device Model,
+what is in /root?; root dir is the home of the root user
+what is in /sbin?;essential System Binaries
+what is in /srv?;server,site specific data served up by the system. rarely used.
+what is in /tmp?;temporary files,emptied upon reboot.
+what is in /usr?;multi-user applications,utilities and data. read only
+what is in /var?;variable data that changes during system operation.
+Describe processes and resources allocated to it.; A process is a program in action. It is an executing program, and instead she ation of that program. A process is made up of its instructions,  It's data, and all of its current activity on the CPU. Each process has an ID, either a PID, ppid, GP ID.
+Describe the role of the init process.; the init process is the first process started at boot. Annette has a PID of 1. Being it process is the first to start and the last to exit. It runs as long as the system is up. The unit process adopts orphaned child processes, and kill zombie processes.
+Distinguish between processes, programs, and threads.; A program is a set of instructions with whatever data is needed to execute those instructions. A program is static, not in action. A process is a program in action. when the program is executed, a process is created / forked. it is in instantiation of that program. A program can have many processes associated with it. A thread is the smallest unit of processing. Processes have many threads. Threads are like pieces of a process working on the same goal. Threads run in shared memory. processes run in isolated memory.
+ describe process attributes.; Processes have the following attributes:  the program being executed, its context or state, it's permissions, and its Associated resources.
+ Describe process permissions and states.; processes have two states, or modes:  user State and system/kernel state. All root and user processes begin in the user mode. If these processes need access to hardware such as disc, peripherals Etc,  they issue a system call which allows criminal code to access the hardware for the process.
+what command can control the limitations of processes?; $ ulimit 
+How are process permissions inherited?; Process permissions are inherited from the user that executed the program. Occasionally they are inherited from the writer of the program, regardless of who executed. There are also special privileges, setuid programs. 
+What are the different process States?; The sleeping state:  the process is dormant while it waits for input.  the stopped state:  process is paused, usually by programmer who is debugging.  the zombie state:  process has completed but no other program has checked it exit status.
+ describe running in user mode.; All user and root processes run in user mode. User mode has lesser Privileges and does not have access to hardware.
+ Describe running in kernel mode.;  kernel/system  mode has elevated Privileges and has full access to hardware.
+ Describe Daemon processes.; Daemon processes are background processes. Daemon processes provide a service to the user. Their names should end with d. they are efficient since they only run when needed. They usually don't have control over standard input and output.
+ Describe how new processes are forked / created.; when a user issues a command in the shell, the exec  command creates a child process and the parent/shell  is put to sleep via a weight system call. When the child process is completed it dies via the exit system call and the parent is awakened.
+ use nice Andre nice to set and modify priorities.;$ nice +5 [command] # we'll run a program with the given niceness. $renice +5 [PID] #will change the niceness of an existing program.
+describe a  static Library.; static libraries are code that is inserted into the program at compile time it is never updated. since the static library is never updated, the program is never at risk of an update breaking it. This comes at the cost of bugs and  security fixes.
+ describe a shared Library.; shared libraries are housed in a local directory and inserted into the program at run time. When shared libraries are updated, the program runs with this new updated code.  Shared libraries are known as Dynamic link libraries, dll.  The con of shared libraries is dll hell. major changes to a shared Library can break a program that uses it.
+ What is dll hell?; Dll hell refers to updated shared libraries breaking programs.
+What resources do processes require on a system?;  Processes require RAM, memory, CPU time, peripherals Etc.
+Is a process ID the same as a thread group ID? Explain.; Yes. Process ID is the same as thread group ID. A thread group ID is used internally in the system.
+What is a zombie process?; A zombie process is a child process that has terminated before its parent. It has not had its exit code examined. Zombies have released all resources, but are just waiting in perpetuity for their exit code to be examined. The init process checks on  zombie processes and allows them to die gracefully.
+What is ulimit?; ulimit is a bad command.  It shows the limitations of the current user. system administrator can change these values.
+ What are the two limit types of ulimit?; the to limit types in ulimit  are hard and soft. 
+the command to find the hard limit.;$ ulimit -H [option] #Note the many different options.
+ The command to find the soft limit.;$ ulimit -S [option] 
+Change the limit of processes. explain the range.; $ ulimit -n 1600 # this changes the number of file descriptors to 1600. Note that this cannot surpass the hard limit. This only affects the current shell.
+Describe setuid  programs.; setuid  Programs are marked s execution bit. they have a different effective user ID, euid. They are run with the user ID of the user that owns the program. 
+Describe non-setuid program.;Non set uid programs run with the uid of the user who runs them as opposed to set uid, which runs with the uid of the person who owns the program.
+What manages all of the processes?; The scheduler manages all of the processes.
+ how are process State reported?; Process state is reported by the process listing.
+What is another name for a zombie process questions; Another name for the zombie process is defunct process.
+what are the two types of execution modes, and where are they enforced?; The two types of execution modes are user mode and system mode. Execution modes are enforced at the hardware level.
+what is the benefit of user mode?; processes in User mode run in isolated userspace, protecting it from other processes.
+What is process resource isolation?; Process resource isolation is the separation a process userspace. Each process is protected from other processes. This promotes security and stability.
+ Describe kernel mode.; in kernel mode/system mode, the CPU has full access to Hardware on systems. If a user mode process need access to hardware, it must issue a system call to access these resources. This causes a context switch. This must happen every time the disk is written too.
+ What is a  Context switch?; A contact switch is a switch from user mode to Kernel mode. Research. 
+What is a system call?; Research.
+Describe the five steps a process Creation in a command shell.; One. Command is given, a new process is forked. Two. A weight system call puts the parent process to sleep. Three. The command is loaded onto the child processes space via the exec command. Four. The command complete execution, child process dies via the exit system call. Five. Parent shell is awakened by the death of the child process and a new shell prompt is issued.
+ In the Shell, what do we add after the command to make it execute in the background?;  An ampersand will make it execute in the background.
+ Describe a kernel created process.; kernel created process is not forked from a user.  The Linux kernel directly creates two kinds of processes:  internal and external.
+ What is an internal kernel process?; internal kernel process is maintenance work. Examples are flushing buffers, balancing CPU load, ensuring device drivers handle work.  internal processes run as long as the system is running.
+ What is an external kernel process?; The external process is started by the kernel, but runs in user space. 
+What command will show us external and internal kernel processes?;$ ps -elf # the process command. all kernel processes we'll have a ppid of 2,  meaning kthreadd.
+is forking?; Forking is the creation of new processes. The original Parent continues to run while the child process starts.
+which process is given priority, a parent or child?; In Old systems, child processes were given priority over the parent. In modern systems they run parallel.
+a fork command is most awfully followed by which command?;  The fork command is followed by the exec command. The exec command terminates the parent and causes the child process to inherit the parents ID.
+Describe the  range of niceness values.;  niceness ranges from -22  to +19. the larger the niceness value, the lower the priority. Niceness refers to a processes tendency to allow another process to go before it.
+What is the command to increase the niceness of an existing process by 5?;$ renice +3 [command]
+ what is the command to set the niceness of a command at start?; nice -n 5 [command] [args if any]
+When using nice, what happens if you don't specify a niceness value?;  If a value is not given, nice will increase the niceness by 10.
+ By default, who can change the niceness values?;  only the super user can change the niceness values. This can be changed in etc / security / limits.conf
+Describe Library versioning.; library versioning Refers to the same Library having different versions on one system. Libraries are carefully version to avoid dll hell. A program May specify and look for a major version of a given Library. If it is not specified by the program, then the most current minor version of the library is used.
+How can we find the shared libraries required for utility?; $ ldd [path to utility] , $ ldd /bin/ls #Will return all of the dependencies.
+ what is run at boot time to specify  which directories should be searched for libraries? where does this come and look?; ldconfig  Is run at boot time. It use etc/ls.so.conf,  which list directories that will be searched. It must be run a  as route.
+ what environment variable specifies which directories will be searched for libraries?; $LD_LIBRARY_ PATH
+Issue the command to change the maximum number of open files to 2048:; $ ulimit -n 2048 # where -n is the file descriptor flag
+increase the niceness a PID= four for four by 5.; $ renice +5 444 
+Increase the number of open files allowed up to the hard limit.; $ ulimit -n hard
+What is system V IPC?;  system V IPC is an old method of inter  process communication. 
+What is the command  to view a summary of system V IPC?;$ ipcs # This will show a summary of all three mechanisms of system V IPC: message queue, semaphores, shared memory segments. Use the -p  flag to view the parent ID as well.
+What is a signal?;  a signal is a form of inter  process communication. Signals are one-way communication, and they are asynchronous.  Signals notified processes of asynchronous events, or exceptions. Signals are simple and lightweight.
+Who can send a signal?; A signal can be sent by the user, the kernel, or other processes. The kernel will send a signal as a result of an exception or programming error. A user process will send a system call to the kernel, which then sends a signal on its behalf. 
+ what is the command used to send a signal?;  The kill command is used to send signals. $ kill
+ the command to list available signals:; $ kill -l # the L flag list all signals and their numbers.
+ what is the command Define the Linux docs on signals?;$ man 7 signal 
+what are the two types of signals?; the two types of signals are standard signals and real-time  signals.
+describe the difference between kill, killall, pkill.; kill will take a PID And an option $ kill -9 [PID]. killall Will send a signal to all processes with a given name $ killall [process name]. pkillPeekskill will send a signal do all processes that match a given pattern $ pkill [signal] [options] [pattern].
+ our signals one of the oldest forms of IPC?; Yes. Signals are one of the oldest forms of inter  process communication.
+Where can a signal be sent?;  A signal can be sent from the kernel to a process, from one process to another, or to itself.
+ what are signals used for?; Signals are a mechanism used for the kernel and processes to coordinate their activities. They signal when something important has happened with a process.
+why is kill an unfortunate name for the signal command?; Kill is an unfortunate name because not all signals terminate a process.
+ Regarding asynchronous events, what does asynchronous mean?; Asynchronous means either the event was not expected to occur, or the event was expected but when it will occur is unknown.
+ Describe the two pads by which signals can be sent to a process.; From the kernel to the process, as a result of an exception or programming error. From a user process issuing a system call  to the kernel that then sends the signal to the process.
+Can the process sending the signal be the same process that receives it?; Yes. The process that sends the signal can be the same one that receives it.
+Can a signal be sent to a process owned by another user?; No. Signals can only be sent to process is owned by the same user, or by the Superuser to any process.
+what does a program do when it receives a signal?; Depending on the program and how it is written to handle it, it might:  take specific actions to handle the signal, or respond according to our system defaults.
+ What are the two signals that cannot be handled?; SIGKILL and SIGSTOP  are the two signals that cannot be handled. Sigkill and sigstop always result in termination of the program.
+Why is the type of signal important?; The type of signal indicates the type of event or exception that has occurred. We can use it to determine why our program failed.
+ What two things do signals usually handle?; Signals usually handle exceptions detected by hardware, and exceptions generated by the environment such as the premature death of a process from a user's terminal.
+ Describe real-time signals.; real-time signals are fairly new addition to Linux. Real-time signals have no predefined purpose and differ from normal/standard signals. time signals can be cute and handled in a first in first out order.
+How are real-time signals denoted?;  real-time signals are listed as SIGRTMIN.
+Why is the manual page for manual, $ man man,  useful?; man man will show us the various chapters available that we can search. 
+If a process can't interact with another process how does it send a signal to another process?; the first process must execute a system call, the kernel then sends the signal on its behalf.
+When using the kill command without options, what is the default signal sent?; the kill commands default is sigterm, which is a terminate signal that can be handled. The program may die immediately, or it may handle the signal and clean up after itself.
+while in the terminal, pressing Ctrl Z is the same as sending which signal?; $ kill -SIGTSTP [PID]. Sig t stop will pause the process.
+What are the four things that software Management Systems offer? Describe them.; software Management Systems offer us scalability, repeatability, Automation, and predictability. Regarding scalability, working on 10,000 machines is the same as working on one machine. Regarding repeatability, installation and removal of programs is easy. regarding automation, there is no need for manual installs or upgrades. Regarding predictability, we know where packages will be installed.
+ what are the types of packages regarding software Management Systems?; The types of packages are binary, Source, Architecture independent, and meta packages.
+ what is a source package?; A source package has all files and information needed to build and compile a program for any distribution. By default Source packages are not installed on a system they must be obtained from the vendor.
+ What is a binary package?; Binary packages are distribution specific. Binary packages are the packages built from The Source package. binary packages have everything they need to run on a specific distribution: libraries and instructions.
+ name the main available package Management Systems. Describe them.; The main package Management systems are RPM and dpkg. RPM is the redhat package manager and is used on all red hat derivative distributions. Dpkg is the Debian package manager and is used on all Debian derivative distribution.
+ regarding package Management Systems, what are the two levels of utilities and why are two levels needed?; The two levels of package Management systems are high-level and low-level. High-level utilities install packages and handle dependencies as well as package conflicts. Low-level utilities install the software only they cannot handle dependencies and conflicts. 
+Name the low level package management system utilities.; Low-level utilities are RPM and dpkg. The only handle installation, not conflicts and dependencies.
+ Name high-level package Management Systems.; apt, apt-get, apt-cache, yum, dnf Are high-level utilities. They handle installation as well as conflicts and dependencies.
+ Why is creating your own package beneficial?; Packages enhance the control over where software is installed  And how it is installed. It is self-contained and can create its own siblings, its own directories, has its own permission, and its own symlinks.
+ What is the role of source control systems?; Managing projects become more difficult as they grow in size and number a people contributing to them. Source control coordinate the interactions of the group working on the project. Source control coordinates the operations  between development and deployment.
+ Give a brief description of git?; Git was written by Linus Torvalds. He wrote it to replace bitkeeper, a source control system that was used by the Linux kernel development team. Git is made up of three primary objects blobs, trees, commit. Most notably, it does not depend on file names for backups.
+What do package Management systems do?; package Management Systems give us the tools that allow us to automate installation, removal, updating, configuring. 
+What is included in a package?; A package may include executable files, data files documentation, configuration files, and metadata: version numbers, checksum, dependencies Etc. 
+When a package is installed is it the information stored internally?; Yes, when a package is installed all of its information is stored in and internal database. It is easily queried for version status and update information.
+What is a metal package?; A metal package is a group of associated packages. They are used to install relatively large subsystems such as in office suite.
+ What is an architecture independent package?; Architecture independent packages are packages that contain files and scripts which run under and interpreter. Self-contained most likely.
+Name a few  Boutique package Management Systems.; portage, pacman, tar balls (old version, no removal or install methods, slackware)
+What is a package Repository?; Every distribution has a package Repository. Package repositories are where are system utilities go to get the software and updates with new version.
+ Whose job is it to ensure that the package repository software plays well with others?; It is the job of the distribution to ensure that its package repositories contain software that plays well with others.
+ Are there other repositories besides the distributions main package repo?; Yes, there are external repositories. And conflicts can arise between external package systems and the main repo.
+ Describe dependency hell.; dependency hell is when dependencies from a main repository are updated separate from the external repository. Breaking packages from one or the other.
+ What is EPEL?;  it stands for extra packages for Enterprise Linux. E p e l is an external  repository that plays well with Red Hat Linux.
+ RPM controls what four major actions in Linux?; RPM controls the installation, verification, upgrade, and removal of software on Linux.
+ is Red Hat package manager a low-level or a high-level utility?; Redhat package manager is a low-level utility. It cannot handle errors and dependency issues.
+ Describe the contents of an RPM file.; RPM files contain all files and information needed to install a program. 
+are RPM files distribution dependent?; Yes, RPM files are distribution specific. It may be impossible to install on another distribution.
+ List advantages of using redhat package manager.; Determine what package a file is a part of. determine what version is installed. Install and uninstall packages without leaving debris. verify a package was installed correctly. Distinguish documents from the rest of the package. Capable of installing packages over the internet.
+describe the naming convention for RPM files, both binary and source.; The prefix of a binary RPM file is made up of the name, version, and release number -  separated by dashes  And followed with a dot. the suffix is made up of the distro, architecture, and RPM extension.  these are separated with the DOT. the only difference in naming between the binary and the source is that the extension for the source ends in .src.rpm. .  sometimes distro is replaced with package source.
+ Where is the RPM database found on the system?;  The RPM database is found in /var/lib/rpm
+Should the RPM files in the database ever be manually modified?;  No. They should only be modified using the RPM command.
+what is the command to specify an alternative data base directory for RPM?; $ rpm --dbpath [path to dir]
+What is the command to rebuild the RPM database?; $ sudo rpm --rebuilddb
+RPM has helper programs. Where are they found?; RPM helper programs are found in /usr/lib/rpm
+Show a command that can count the number of files in a directory.;$ ls directory | wc -l # the l Option counts the number of new lines.
+In what file are RPM default settings found?; /usr/lib/rpm/rpmrc, or /etc/rpmrc, or ~/,rpmrc. We can also create our own rpmrc  fire.
+Use RPM to query The Bash  package.; $ rpm -q bash
+ use RPM to show which package Bash comes from.; $ rpm -qf  /bin/bash
+Use RPM to show which files were installed by Bash.; $ rpm -ql bash 
+Use RPM to show information about The Bash package.; $ rpm -qi bash
+Use RPM to list all packages on this system.; $ rpm -qa
+What does RPMs verify option do?; verify will check if our systems packages are consistent with the   systems RPM database.
+ use rpm to verify all packages on this system.; $ rpm -Va
+When using RPMs verify option what does no output  indicate?;  output is only generated when there is a problem.
+Use our p.m. to verify a single package.;$ rpm -V packageName
+Use RPM to install a package.; $ sudo rpm -ivh [rpm file name] #Using the install, verbose, hash progress options.
+Name the tasks RPM performs when installing a package.;  RPM performs dependency checks, conflict (version)  checks, deals intelligently with config files, unpacks files and provides correct attributes and permissions, execute commands required before or after installation, and update the system RPM database.
+Use RPM to uninstall a package.; $ sudo rpm -e [package name] 
+What option is used to uninstall with RPM?;  The erase option  Is used.
+What will happen RPM encounters dependencies or errors on uninstall?; RPM will exit if it encounters any conflicts.
+Describe RPMs -vv  option.;  the -vv  very verbose option yield even more information. Lots of ugly debugging information.
+ how can one fix the system after erasing the RPM package itself?;  The only way to fix this is to reinstall the operating system or perhaps boot into a rescue environment.
+Using RPM, show which packages are dependent upon bzip2.; $ rpm -q --whatrequires bzip2
+Upgrade an existing package using RPM.;$ sudo rpm-Uvh [rpm file name]
+When RPM upgrades a package what is removed and what is not removed?; When RPM upgrades a package, the old package is removed except for the configuration files, Which is saved with the suffix .rpmsave
+What happens if we use our p.m. to upgrade a package using the install flag instead of the upgrade option?;  Using the install option instead of the upgrade option will produce an error.
+Describe what freshening and RPM package does.; Freshening will upgrade older versions of packages to newer versions. If the version is the same nothing happens.
+ Issue the command to freshen all packages in the directory.;$ sudo  rom -Fvh *.rpm 
+What is freshening useful for?;  Freshening is useful to apply lots of Patches at once. Patches are upgraded packages.
+Issue the command to upgrade the kernel using RPM. Explain the options given.;$ sudo rpm -ivh [KernelFile.rpm] # the install option, never the update option. The verbose and the hash progress option. 
+What happens to Grub when RPM upgrades the kernel?; Grubs configuration files are automatically updated to include the new version of the kernel. The new kernel is Now the default choice at reboot.
+Describe the command rpm2cpio.; rpm2cpio will convert in RPM file into a cpio archive.  hence the name RPM to cpio.  it can also list, and extract files from the RPM without needing to install the RPM.
+Issue the command to  convert an RPM into a cpio archive; $ rpm2cpio foobar.rpm > foobar.cpio
+Using rpm2cpio,  list the contents of an RPM.;$ rpm2cpio foobar.rpm | cpio -t
+Using rpm2cpio, Extract a file from a .rpm.; $ rpm2cpio foobar.rpm | cpio -ivd /path/to/file
