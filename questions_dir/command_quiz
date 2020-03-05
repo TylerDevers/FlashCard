@@ -1,0 +1,62 @@
+What is command to add new user? How to give them password?;$ useradd [username] $passwd [username]
+Command to give user sudo privileges?; $ echo userName ALL=(ALL) ALL > /etc/sudoers.d/username $ chmod 440 /etc/sudoers.d/username # create file that is the same as the user in /etc/sudoers.d/,set proper permissions
+Add /sbin and /usr/sbin to $PATH;$ PATH=$PATH:/usr/sbin:/sbin
+How would you examine subdirectories and their contents?; $ sudo du # use options to minimize depth for clarity
+What is the command to find the main consumers of storage on disc? Explain it.;# sudo du -shxc * #The DU command, disk usage. S flag shows totals,  H flag is human readable, xflag don't look and other file systems, asterisk wildcard will evaluate all and give a total. --max-depth=1 Will prevent searching in subdirectories. 
+what command can control the limitations of processes?; $ ulimit 
+use nice renice to set and modify priorities.;$ nice +5 [command] # we'll run a program with the given niceness. $renice +5 [PID] #will change the niceness of an existing program.
+the command to find the hard limit.;$ ulimit -H [option] #Note the many different options.
+The command to find the soft limit.;$ ulimit -S [option] 
+Change the limit of processes. explain the range.; $ ulimit -n 1600 # this changes the number of file descriptors to 1600. Note that this cannot surpass the hard limit. This only affects the current shell.
+What command will show us external and internal kernel processes?;$ ps -elf # the process command. all kernel processes we'll have a ppid of 2,  meaning kthreadd.
+What is the command to increase the niceness of an existing process by 5?;$ renice +3 [command]
+what is the command to set the niceness of a command at start?;$ nice -n 5 [command] [args if any]
+How can we find the shared libraries required for utility?; $ ldd [path to utility] , $ ldd /bin/ls #Will return all of the dependencies.
+Issue the command to change the maximum number of open files to 2048:; $ ulimit -n 2048 # where -n is the file descriptor flag
+increase the niceness a PID= four for four by 5.; $ renice +5 444 
+Increase the number of open files allowed up to the hard limit.; $ ulimit -n hard
+What is the command  to view a summary of system V IPC?;$ ipcs # This will show a summary of all three mechanisms of system V IPC: message queue, semaphores, shared memory segments. Use the -p  flag to view the parent ID as well.
+what is the command used to send a signal?;  The kill command is used to send signals. $ kill
+the command to list available signals:; $ kill -l # the L flag list all signals and their numbers.
+what is the command Define the Linux docs on signals?;$ man 7 signal 
+while in the terminal, pressing Ctrl Z is the same as sending which signal?; $ kill -SIGTSTP [PID]. Sig t stop will pause the process.
+what is the command to specify an alternative data base directory for RPM?; $ rpm --dbpath [path to dir]
+What is the command to rebuild the RPM database?; $ sudo rpm --rebuilddb
+Show a command that can count the number of files in a directory.;$ ls directory | wc -l # the l Option counts the number of new lines.
+Use RPM to query The Bash  package.; $ rpm -q bash
+use RPM to show which package Bash comes from.; $ rpm -qf  /bin/bash
+Use RPM to show which files were installed by Bash.; $ rpm -ql bash 
+Use RPM to show information about The Bash package.; $ rpm -qi bash
+Use RPM to list all packages on this system.; $ rpm -qa
+use rpm to verify all packages on this system.; $ rpm -Va
+Use rpm to verify a single package.;$ rpm -V packageName
+Use RPM to install a package.; $ sudo rpm -ivh [rpm file name] #Using the install, verbose, hash progress options.
+Use RPM to uninstall a package.; $ sudo rpm -e [package name] 
+Using RPM, show which packages are dependent upon bzip2.; $ rpm -q --whatrequires bzip2
+Upgrade an existing package using RPM.;$ sudo rpm-Uvh [rpm file name]
+Issue the command to freshen all packages in the directory.;$ sudo  rom -Fvh *.rpm 
+Issue the command to upgrade the kernel using RPM. Explain the options given.;$ sudo rpm -ivh [KernelFile.rpm] # the install option, never the update option. The verbose and the hash progress option. 
+Issue the command to  convert an RPM into a cpio archive; $ rpm2cpio foobar.rpm > foobar.cpio
+Using rpm2cpio,  list the contents of an RPM.;$ rpm2cpio foobar.rpm | cpio -t
+Using rpm2cpio, Extract a file from a .rpm.; $ rpm2cpio foobar.rpm | cpio -ivd /path/to/file
+What are the two ways to disable a repository?; $ yum --disablerepo=reponame  # or one can open the repository file Within Yum.repo.d And toggle enabled from 1 to 0.
+What are the three Arguments for yums list option?; $sudo yum list [ installed |  update |  available ]
+List all group packages with yum; $ yum grouplist
+list information on a group package with yum;$ yum groupinfo groupPackageName
+Show packages that contain a certain file name with yum; $ yum provides “/path/to/file”
+Verify a package using yum;$ yum verify bash 
+Use yum to install a local RPM file; $ yum localinstall foo.rpm # Note that yum will handle dependencies.
+Use yum to install a group package;$ yum groupinstall groupname     or     $ yum install @groupname
+Remove a package with yum;$ sudo yum remove packagename
+use yum to update a package;$ yum update packge - if no package is given all packages will be updated.
+List all  plugins with yum;$ sudo yum list “ yum-plugin*”
+Show a list of enabled repositories; $ yum repolist
+download packages for installation but do not install them;$ sudo yum install --download only package
+View your history of yum commands;$ yum history
+Check for updates with yum but do not install them;$ sudo yum check-update 
+Using yum list the kernel related packages;$ sudo yum list installed “kernel *”
+Using yum find all packages that reference bash in their name or description;$ sudo yum search bash
+find installed and available bash packages using yum;$ sudo yum list bash
+get package information for bash using yum;$ sudo yum info bash
+show the dependencies for bash package with yum;$  sudo yum deplist bash
+Name the Yum group commands; $ yum [ groupli st | groupinfo | groupinstall | groupremove ]
